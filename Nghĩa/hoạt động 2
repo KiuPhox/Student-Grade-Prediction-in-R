@@ -1,0 +1,46 @@
+			  	     # Phan cung may tinh
+library(ggplot2)
+
+# Lay du lieu
+	Hardware<-file.choose()
+	Hardware<-read.table(Hardware,header=FALSE,sep=",")
+	colnames(Hardware)<-c("VendorName","ModelName","MYCT","MMIN","MMAX","CACH","CHMIN","CHMAX","PRP","ERP")
+	View(Hardware)
+
+# Lam ro du lieu
+	# Thong ke cac nha san xuat cpu trong mau
+		temp<-infile[,1]
+		Vendors<-factor(temp[1:length(temp)])
+		Vendors<-levels(Vendors)
+		CPUs<-c()
+		for(i in 1:length(Vendors))
+		{
+			number<-sum(temp==Vendors[i])
+			CPUs<-append(CPUs,number)
+		}
+		Data<-data.frame(Vendors,CPUs)
+		ggplot(data=Data,mapping= aes(x=Vendors,y=CPUs,size=5)) + geom_point()+labs(x="Vendor Names",y="Number of CPUs in sample")
+
+			
+	# Do thi bieu dien phan phoi gia tri Machine Cycle Time (MYCT)
+		ggplot(data = Hardware, aes(x = MYCT)) +geom_histogram(binwidth = 5)+labs(x="Machine Cycle Time (MYCT)",y="Count")
+		
+
+	# Thong ke phan phoi gia tri Maximum Main Memory (MMAX)
+		summary(Hardware$MMAX)
+
+	# Do thi bieu dien phan phoi gia tri Cache Memory (CACH)
+		ggplot(data = Hardware, aes(x = CACH)) +geom_histogram(binwidth = 3)+labs(x="Cache Memory (CACH)",y="Count")
+	
+	# Do thi bieu dien phan phoi gia tri Maximum Channels (CHMAX)
+		ggplot(data = Hardware, aes(x = CHMAX)) +geom_histogram(binwidth = 5)+labs(x="Maximum Channels (CHMAX)",y="Count")
+
+	# Do thi bieu dien phan phoi gia tri Published Relative Performance (PRP)
+		ggplot(data = Hardware, aes(x = PRP)) +geom_histogram(binwidth = 5)+labs(x="Published Relative Performance (PRP)",y="Count")
+
+	# Do thi bieu dien phan phoi gia tri Estimated Relative Performance (ERP)
+		ggplot(data = Hardware, aes(x = ERP)) +geom_histogram(binwidth = 5)+labs(x="Estimated Relative Performance (ERP)",y="Count")
+
+
+# Mo hinh du lieu
+		
