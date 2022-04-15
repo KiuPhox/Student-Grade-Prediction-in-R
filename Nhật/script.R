@@ -47,7 +47,7 @@ hist(new_DF[, "G3"], main = "Histogram of G3",col = "lightBlue", xlab = "Final s
 boxplot(G3~studytime, main= "Boxplot of Studytime considering G3",col = "green",border = "blue",horizontal = FALSE,data=new_DF)
 boxplot(G3~failures, main= "Boxplot of Failures considering G3",col = "green",border = "blue",horizontal = FALSE,data=new_DF)
 boxplot(G3~paid, main= "Boxplot of Paid considering G3",col = "green",border = "blue",horizontal = FALSE,data=new_DF)
-boxplot(G3~sex, main= "boxplot of Sex considering G3",col = "green",border = "blue",horizontal = FALSE,data=new_DF)
+boxplot(G3~sex, main= "Boxplot of Sex considering G3",col = "green",border = "blue",horizontal = FALSE,data=new_DF)
 ## phân phối G3 theo G1, G2, absences (pairs)
 pairs(G3~G1,main= "Pairs of G1 considering G3",col = "red", pch = "8", data=new_DF)
 pairs(G3~G2,main= "Pairs of G2 considering G3",col = "red", pch = "8", data=new_DF)
@@ -55,13 +55,13 @@ pairs(G3~absences,main= "Pairs of Absences considering G3",col = "red", pch = "8
 
 # Xây dựng các mô hình hồi quy tuyến tính
 new_DF <- new_DF %>% mutate_at(vars(,-G3,-absences),.funs=funs(factor)) %>% select(-c(G1,G2))
-M1 <- lm(formula = G3~.,data = new_DF)
-M2 <- lm(formula = G3~.-failures, data = new_DF)
-M3 <- lm(formula = G3~.-studytime, data = new_DF)
-M4 <- lm(formula = G3~.-paid, data = new_DF)
+M1 <- lm(formula = G3~.,data = new_DF) # Mô hình tất cả các biến
+M2 <- lm(formula = G3~.-failures, data = new_DF) # Mô hình loại bỏ biến failures
+M3 <- lm(formula = G3~.-studytime, data = new_DF) # Mô hình loại bỏ biến studytime
+M4 <- lm(formula = G3~.-paid, data = new_DF) # Mô hình loại bỏ biến paid
 compare_performance(M1, M2, M3, M4) # Vì M4 có giá trị AIC thấp nên ta chọn làm mô hình hồi quy tuyến tính
 
-plot(M4$fitted.values, M4$residuals,pch = 16,col = "black",xlab = "Fitted Values", ylab="Sai số",main = "Residual Plot")
+plot(M4$fitted.values, M4$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")
 abline(h=0,col="red")
 
 # Dự báo điểm
