@@ -1,4 +1,4 @@
-			  	     # Phan cung may tinh
+			  	                  # Phan cung may tinh
 library(ggplot2)
 
 # Lay du lieu
@@ -18,29 +18,40 @@ library(ggplot2)
 			number<-sum(temp==Vendors[i])
 			CPUs<-append(CPUs,number)
 		}
-		Data<-data.frame(Vendors,CPUs)
-		ggplot(data=Data,mapping= aes(x=Vendors,y=CPUs,size=5)) + geom_point()+labs(x="Vendor Names",y="Number of CPUs in sample")
+		barplot(main="Number of CPUs associated with vendors in sample",xlab="Vendors",ylab="Associated number of CPUs",CPUs,names.arg=Vendors,col="lightblue")
 
 			
 	# Do thi bieu dien phan phoi gia tri Machine Cycle Time (MYCT)
-		ggplot(data = Hardware, aes(x = MYCT)) +geom_histogram(binwidth = 5)+labs(x="Machine Cycle Time (MYCT)",y="Count")
+		#hist(Hardware[, "MYCT"], main = "Histogram of Machine Cycle Time (MYCT)",col = "lightBlue", xlab = "Machine Cycle Time (MYCT)", ylab = "Quantity", labels = TRUE)
+		boxplot(Hardware$MYCT~Hardware$VendorName, main= "Boxplot of MYCT considering Vendors",col = "green",border = "red",data=Hardware,xlab="Vendors",ylab="Machine Cycle Time (MYCT)")
 		
-
+	# Thong ke phan phoi gia tri Minimum Main Memory (MMIN)
+		#hist(Hardware[, "MMIN"], main = "Histogram of Minimum Main Memory (MMIN)",col = "lightBlue", xlab = "Minimum Main Memory (MMIN)", ylab = "Quantity", labels = TRUE)
+		boxplot(Hardware$MMIN~Hardware$VendorName, main= "Boxplot of MMIN considering Vendors",col = "green",border = "red",data=Hardware,xlab="Vendors",ylab="Minimum Main Memory (MMIN)")
+		
 	# Thong ke phan phoi gia tri Maximum Main Memory (MMAX)
-		summary(Hardware$MMAX)
+		#hist(Hardware[, "MMAX"], main = "Histogram of Maximum Main Memory (MMAX)",col = "lightBlue", xlab = "Maximum Main Memory (MMAX)", ylab = "Quantity", labels = TRUE)
+		boxplot(Hardware$MMAX~Hardware$VendorName, main= "Boxplot of MMAX considering Vendors",col = "green",border = "red",data=Hardware,xlab="Vendors",ylab="Maximum Main Memory (MMAX)")
 
 	# Do thi bieu dien phan phoi gia tri Cache Memory (CACH)
-		ggplot(data = Hardware, aes(x = CACH)) +geom_histogram(binwidth = 3)+labs(x="Cache Memory (CACH)",y="Count")
-	
+		#hist(Hardware[, "CACH"], main = "Histogram of Cache Memory (CACH)",col = "lightBlue", xlab = "Cache Memory (CACH)", ylab = "Quantity", labels = TRUE)
+		boxplot(Hardware$CACH~Hardware$VendorName, main= "Boxplot of CACH considering Vendors",col = "green",border = "red",data=Hardware,xlab="Vendors",ylab="Cache Memory (CACH)")
+		
+	# Do thi bieu dien phan phoi gia tri Minimum Channels (CHMIN)
+		#hist(Hardware[, "CHMIN"], main = "Histogram of Minimum Channels (CHMIN)",col = "lightBlue", xlab = "Minimum Channels (CHMIN))", ylab = "Quantity", labels = TRUE)
+		boxplot(Hardware$CHMIN~Hardware$VendorName, main= "Boxplot of CHMIN considering Vendors",col = "green",border = "red",data=Hardware,xlab="Vendors",ylab="Minimum Channels (CHMIN)")
+		
 	# Do thi bieu dien phan phoi gia tri Maximum Channels (CHMAX)
-		ggplot(data = Hardware, aes(x = CHMAX)) +geom_histogram(binwidth = 5)+labs(x="Maximum Channels (CHMAX)",y="Count")
-
+		#hist(Hardware[, "CHMAX"], main = "Histogram of Maximum Channels (CHMAX)",col = "lightBlue", xlab = "Maximum Channels (CHMAX)", ylab = "Quantity", labels = TRUE)
+		boxplot(Hardware$CHMAX~Hardware$VendorName, main= "Boxplot of CHMAX considering Vendors",col = "green",border = "red",data=Hardware,xlab="Vendors",ylab="Maximum Channels (CHMAX)")
+		
 	# Do thi bieu dien phan phoi gia tri Published Relative Performance (PRP)
-		ggplot(data = Hardware, aes(x = PRP)) +geom_histogram(binwidth = 5)+labs(x="Published Relative Performance (PRP)",y="Count")
+		#hist(Hardware[, "PRP"], main = "Histogram of Published Relative Performance (PRP)",col = "lightBlue", xlab = "Published Relative Performance (PRP)", ylab = "Quantity", labels = TRUE)
+		boxplot(Hardware$PRP~Hardware$VendorName, main= "Boxplot of PRP considering Vendors",col = "green",border = "red",data=Hardware,xlab="Vendors",ylab="Published Relative Performance (PRP)")
 
 	# Do thi bieu dien phan phoi gia tri Estimated Relative Performance (ERP)
-		ggplot(data = Hardware, aes(x = ERP)) +geom_histogram(binwidth = 5)+labs(x="Estimated Relative Performance (ERP)",y="Count")
-
+		#hist(Hardware[, "ERP"], main = "Histogram of Estimated Relative Performance (ERP)",col = "lightBlue", xlab = "Estimated Relative Performance (ERP)", ylab = "Quantity", labels = TRUE)
+		boxplot(Hardware$ERP~Hardware$VendorName, main= "Boxplot of ERP considering Vendors",col = "green",border = "red",data=Hardware,xlab="Vendors",ylab="Estimated Relative Performance (ERP)")
 
 # Mo hinh du lieu
 		
