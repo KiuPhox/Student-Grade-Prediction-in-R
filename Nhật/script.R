@@ -4,7 +4,7 @@ library("ggplot2")
 library("gridExtra")
 library("GGally")
 library("performance")
-install.packages("GGally")
+
 #1.  Đọc dữ liệu (Import data): grade.csv
 openExcel <- file.choose()
 data<- read.csv(openExcel)
