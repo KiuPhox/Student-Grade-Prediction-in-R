@@ -59,14 +59,14 @@ M1 <- lm(formula = G3~.,data = new_DF) # Mô hình tất cả các biến
 M2 <- lm(formula = G3~.-failures, data = new_DF) # Mô hình loại bỏ biến failures
 M3 <- lm(formula = G3~.-studytime, data = new_DF) # Mô hình loại bỏ biến studytime
 M4 <- lm(formula = G3~.-paid, data = new_DF) # Mô hình loại bỏ biến paid
-compare_performance(M1, M2, M3, M4) # Vì M4 có giá trị AIC thấp nên ta chọn làm mô hình hồi quy tuyến tính
+compare_performance(M1, M2, M3, M4) # Vì M1 có giá trị AIC thấp nên ta chọn làm mô hình hồi quy tuyến tính
 
-plot(M4$fitted.values, M4$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")
+plot(M1$fitted.values, M1$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")
 abline(h=0,col="red")
 
 # Dự báo điểm
 new_X <- new_DF %>% select(G3)
-new_X$G3_predicted <- round(predict(object = M4, newdata = new_DF), 2)
+new_X$G3_predicted <- round(predict(object = M1, newdata = new_DF), 2)
 
 x <- cbind(Dat = sum(new_X$G3 >= 10) / nrow(new_X),Ko_Dat = sum(new_X$G3 < 10) / nrow(new_X))
 y <- cbind(Dat = sum(new_X$G3_predicted >= 10) / nrow(new_X), Ko_Dat = sum(new_X$G3_predicted < 10) / nrow(new_X))
