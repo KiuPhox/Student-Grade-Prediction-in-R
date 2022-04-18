@@ -5,90 +5,90 @@ library("gridExtra")
 library("GGally")
 library("performance")
 install.packages("GGally")
-#1.  D???c d??? li???u (Import data): grade.csv
+#1.  Đọc dữ liệu (Import data): grade.csv
 openExcel <- file.choose()
 data<- read.csv(openExcel)
-View(data) # ki???m tra b???n d??? li???u
+View(data) # kiểm tra bản dữ liệu
 
 
-#2.  L�m s???ch d??? li???u (Data cleaning): NA (d??? li???u khuy???t)
-##a.tr�ch ra m???t d??? li???u con d???t t�n l� new_DF ch??? bao g???m c�c bi???n ch�nh m� ta quan t�m nhu d� tr�nh b�y trong ph???n gi???i thi???u d??? li???u
+#2.  Làm sạch dữ liệu (Data cleaning): NA (dữ liệu khuyết)
+##a.trích ra một dữ liệu con đặt tên là new_DF chỉ bao gồm các biến chính mà ta quan tâm như đã trình bày trong phần giới thiệu dữ liệu
 new_DF<- data[,c("G1","G2","G3","studytime","failures","absences","paid","sex")]
-View(new_DF) # ki???m tra b???n d??? li???u
+View(new_DF) # kiểm tra bản dữ liệu
 ##b.
-### Ki???m tra c�c d??? li???u b??? khuy???t trong t???p tin new_DF
-apply(new_DF,2, function(new_DF) which(is.na(new_DF))) # Ki???m tra v� xu???t ra gi� tr??? khuy???t c???a c�c bi???n trong d??? li???u new_DF.
-### phuong ph�p thay th???: xo� b??? h�ng c� ch???a d??? li???u khuy???t NA
+### Kiểm tra các dữ liệu bị khuyết trong tập tin new_DF
+apply(new_DF,2, function(new_DF) which(is.na(new_DF))) # Kiểm tra và xuất ra giá trị khuyết của các biến trong dữ liệu new_DF.
+### phương pháp thay thế: xoá bỏ hàng có chứa dữ liệu khuyết NA
 new_DF<- na.omit(new_DF)
-### Ngo�i ra , V� di???m 0 nhi???u m???t c�ch b???t thu???ng n�n ta xo� c�c h�ng ch???a di???m 0 d??? c� m� h�nh h???i quy h???p l�
+### Ngoài ra , Vì điểm 0 nhiều một cách bất thường nên ta xoá các hàng chứa điểm 0 để có mô hình hồi quy hợp lý
 new_DF <- new_DF %>% filter(G3 != 0) 
-View(new_DF) # ki???m tra l???i b???n d??? li???u
+View(new_DF) # kiểm tra lại bản dữ liệu
 
 
 #3.  Data  visualization
-## t�nh c�c gi� tr??? th???ng k� m� t??? bao g???m: trung b�nh,trung v???, d??? l???ch chu???n, gi� tr??? l???n nh???t v� gi� tr??? nh??? nh???t
-### t�nh
+## tính các giá trị thống kê mô tả bao gồm: trung bình,trung vị, độ lệch chuẩn, giá trị lớn nhất và giá trị nhỏ nhất
+### tính
 mean<- apply(new_DF[,c(1,2,3,6)], 2, mean) 
 median<- apply(new_DF[,c(1,2,3,6)], 2, median)
 sd<- apply(new_DF[,c(1,2,3,6)], 2, sd) 
 min<- apply(new_DF[,c(1,2,3,6)], 2, min)
 max<- apply(new_DF[,c(1,2,3,6)], 2, max)
-### Xu???t k???t qu??? du???i d???ng b???ng
+### Xuất kết quả dưới dạng bảng
 descriptiveStatistics<- list(mean=mean,median=median,sd=sd,min=min,max=max) # Creating list of vectors
 descriptiveStatistics<- as.data.frame(descriptiveStatistics) # Converting list to data frame
-## bi???n ph�n lo???i (studytime, failures, paid, sex)_l???p b???ng th???ng k� s??? lu???ng cho t???ng lo???i
+## biến phân loại (studytime, failures, paid, sex)_lập bảng thống kê số lượng cho từng loại
 studytime <- as.data.frame(table(new_DF$studytime, dnn = list("Self-study time per week")), responseName = "Students")
 failures <- as.data.frame(table(new_DF$failures, dnn = list("Not pass the subject")), responseName = "Students")
 paid <- as.data.frame(table(new_DF$paid, dnn = list("Take math classes outside of school")), responseName = "Students")
 sex <- as.data.frame(table(new_DF$sex, dnn = list("sex")), responseName = "Students")
-## d??? th??? ph�n ph???i G123 (Histogram)
+## đồ thị phân phối G123 (Histogram)
 hist(new_DF[, "G1"], main = "Histogram of G1",col = "lightBlue", xlab = "Semester 1 exam score", ylab = "Quantity", labels = TRUE)
 hist(new_DF[, "G2"], main = "Histogram of G2",col = "lightBlue", xlab = "Semester 2 exam score", ylab = "Quantity", labels = TRUE)
 hist(new_DF[, "G3"], main = "Histogram of G3",col = "lightBlue", xlab = "Final score", ylab = "Quantity", labels = TRUE)
-## ph�n ph???i G3 cho studytime, failures, paid, sex (boxplot)
+## phân phối G3 cho studytime, failures, paid, sex (boxplot)
 boxplot(G3~studytime, main= "Boxplot of Studytime considering G3",col = "green",border = "blue",horizontal = FALSE,data=new_DF)
 boxplot(G3~failures, main= "Boxplot of Failures considering G3",col = "green",border = "blue",horizontal = FALSE,data=new_DF)
 boxplot(G3~paid, main= "Boxplot of Paid considering G3",col = "green",border = "blue",horizontal = FALSE,data=new_DF)
 boxplot(G3~sex, main= "Boxplot of Sex considering G3",col = "green",border = "blue",horizontal = FALSE,data=new_DF)
-## ph�n ph???i G3 theo G1, G2, absences (pairs)
+## phân phối G3 theo G1, G2, absences (pairs)
 pairs(G3~G1,main= "Pairs of G1 considering G3",col = "red", pch = "8", data=new_DF)
 pairs(G3~G2,main= "Pairs of G2 considering G3",col = "red", pch = "8", data=new_DF)
 pairs(G3~absences,main= "Pairs of Absences considering G3",col = "red", pch = "8", data=new_DF)
 
-#4 X�y d???ng c�c m� h�nh h???i quy tuy???n t�nh
-##2 tham s??? c� m???i tuong quan ch???t ch??? v� tr???c ti???p v???i G3 l� G1 v� G2.
-##Do d�, t�nh hu???ng n�y c� th??? l�m sai l???ch m� h�nh, v� v???y c???n lo???i b??? G1 v� G2.
-## D� lo???i b??? bi???n kh�c th� n???u c�n G1G2 th� m� h�nh v???n kh??? nang d�ng cao , ==> du th???a 
+#4 Xây dựng các mô hình hồi quy tuyến tính
+##2 tham số có mối tương quan chặt chẽ và trực tiếp với G3 là G1 và G2.
+##Do đó, tình huống này có thể làm sai lệch mô hình, vì vậy cần loại bỏ G1 và G2.
+## Dù loại bỏ biến khác thì nếu còn G1G2 thì mô hình vẫn khả năng đúng cao , ==> dư thừa 
 new_DF <- new_DF %>% mutate_at(vars(,-G3,-absences),.funs=funs(factor)) %>% select(-c(G1,G2))
-## M� h�nh 1:  m� h�nh h???i quy tuy???n t�nh bao g???m bi???n G3 l� m???t bi???n ph??? thu???c, v� c�c bi???n c�n l???i d???u l� bi???n d???c l???p (d� tr??? G1 G2)
+## Mô hình 1:  mô hình hồi quy tuyến tính bao gồm biến G3 là một biến phụ thuộc, và các biến còn lại đều là biến độc lập (đã trừ G1 G2)
 model_new_DF_all <- lm(G3 ~ studytime + failures + absences + paid + sex,data = new_DF) 
 summary(model_new_DF_all)
-## M� h�nh 2: Lo???i b??? bi???n Paid t??? M1
+## Mô hình 2: Loại bỏ biến Paid từ M1
 model_new_DF_selected02 <- lm(formula = G3~.-paid, data = new_DF) 
 summary(model_new_DF_selected02)
-## M� h�nh 3: Lo???i b??? bi???n Failures t??? M1
+## Mô hình 3: Loại bỏ biến Failures từ M1
 model_new_DF_selected03 <- lm(formula = G3~.-failures, data = new_DF) 
 summary(model_new_DF_selected03)
-## M� h�nh 4: Lo???i b??? bi???n Studytimes t??? M1
+## Mô hình 4: Loại bỏ biến Studytimes từ M1
 model_new_DF_selected04<- lm(formula = G3~.-studytime, data = new_DF) 
 summary(model_new_DF_selected04)
-## V� model_new_DF_all c� gi� tr??? AIC v� RMSE th???p nh???t n�n ta ch???n m� h�nh 1 : model_new_DF_all l�m m� h�nh h???i quy tuy???n t�nh
+## Vì model_new_DF_all có giá trị AIC và RMSE thấp nhất nên ta chọn mô hình 1 : model_new_DF_all làm mô hình hồi quy tuyến tính
 compare_performance(model_new_DF_all, model_new_DF_selected02, model_new_DF_selected03, model_new_DF_selected04) 
 
-## t???i l???i b???n d??? gi???i th�ch s??? t�c d???ng, m???c d??? ???nh hu???ng c???a c�c bi???n l�n di???m thi cu???i k???
+## tải lại bản để giải thích sự tác động, mức độ ảnh hưởng của các biến lên điểm thi cuối kỳ
 summary(model_new_DF_all)
 ##
 ##
 
-## plot() ve~ d�` thi?? bi�??u thi?? sai s�?? h quy va` gia?? tri?? du?? ba??o
-plot(model_new_DF_all$fitted.values, model_new_DF_all$residuals,pch = 16,col = "black",xlab = "Gi� tr??? d??? b�o", ylab="Sai s??? h???i quy",main = "Residual Plot")
+## plot() vẽ đồ thị biểu thị sai số h quy và giá trị dự báo
+plot(model_new_DF_all$fitted.values, model_new_DF_all$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")
 abline(h=0,col="red")
-## � nghia v� nh???n x�t 
+## ý nghĩa và nhận xét 
 ##
 ##
 
-#5 d??? b�o di???m
-## a. Trong d??? li???u c???a b???n, h�y t???o th�m bi???n d???t t�n l� evaluate,....
+#5 dự báo điểm
+## a. Trong dữ liệu của bạn, hãy tạo thêm biến đặt tên là evaluate,....
 evaluate<-prop.table(table(new_DF$G3>=10))
 evaluate
 ## b. ......
@@ -98,9 +98,10 @@ evaluate1 <- prop.table(table(new_X$pred_G3>=10))
 evaluate1
 ## c. ...
 ketQua <- data.frame(cbind(evaluate,evaluate1))
-rownames(ketQua)=c("Kh�ng d???t", "D???t") 
-colnames(ketQua)=c("Quan s�t","D??? b�o")
+rownames(ketQua)=c("Không đạt", "Đạt") 
+colnames(ketQua)=c("Quan sát","Dự báo")
 t(ketQua)
+
 
 
 
