@@ -56,7 +56,10 @@ pairs(G3~G2,main= "Pairs of G2 considering G3",col = "red", pch = "8", data=new_
 pairs(G3~absences,main= "Pairs of Absences considering G3",col = "red", pch = "8", data=new_DF)
 
 #4 Xây dựng các mô hình hồi quy tuyến tính
-##2 tham số có mối tương quan chặt chẽ và trực tiếp với G3 là G1 và G2.
+## Kiểm tra hệ số tương quan của G1, G2 với G3
+cor(new_DF$G1, new_DF$G3)
+cor(new_DF$G2, new_DF$G3)
+## Bởi vì hệ số tương quan lớn 0.8 nên 2 tham số G1 và G2 có mối tương quan chặt chẽ và trực tiếp với G3.
 ##Do đó, tình huống này có thể làm sai lệch mô hình, vì vậy cần loại bỏ G1 và G2.
 ## Dù loại bỏ biến khác thì nếu còn G1G2 thì mô hình vẫn khả năng đúng cao , ==> dư thừa 
 new_DF <- new_DF %>% mutate_at(vars(,-G3,-absences),.funs=funs(factor)) %>% select(-c(G1,G2))
