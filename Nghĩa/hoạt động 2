@@ -48,10 +48,6 @@ library(ggplot2)
 		Table<-as.data.frame(rbind(sapply(Hardware[,3:9],mean),sapply(Hardware[,3:9],median),sapply(Hardware[,3:9],min),sapply(Hardware[,3:9],max)),row.names=c("Mean","Median","Min","Max"))
 		View(Table)
 		
-	## Đồ thị biểu diễn phân phối giá trị Estimated Relative Performance (ERP)
-		##hist(Hardware[, "ERP"], main = "Histogram of Estimated Relative Performance (ERP)",col = "lightBlue", xlab = "Estimated Relative Performance (ERP)", ylab = "Quantity", labels = TRUE)
-		#boxplot(Hardware$ERP~Hardware$VendorName, main= "Boxplot of Vendors considering ERP",col = "green",border = "red",data=Hardware,xlab="Vendors",ylab="Estimated Relative Performance (ERP)")
-
 # Xây dưng mô hình hồi quy tuyến tính
 		## Mô hình hồi quy tuyến tính bao gồm biến phụ thuộc PRP và tất cả các biến độc lập
 		Model_1 <- lm(formula=PRP~MYCT + MMIN+MMAX+CACH+CHMIN+CHMAX,data=Hardware)
