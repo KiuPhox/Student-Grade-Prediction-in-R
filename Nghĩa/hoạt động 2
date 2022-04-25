@@ -11,17 +11,17 @@ library(ggplot2)
 	
 # Làm rõ dữ liệu
 	## Thống kê các nhà sản xuất trong mẫu
-		temp<-infile[,1]
+		temp<-Hardware[,1]
 		Vendors<-factor(temp[1:length(temp)])
 		Vendors<-levels(Vendors)
 		CPUs<-c()
 		for(i in 1:length(Vendors))
 		{
-			number<-sum(temp==Vendors[i])
-			CPUs<-append(CPUs,number)
+ 		 number<-sum(temp==Vendors[i])
+ 		 CPUs<-append(CPUs,number)
 		}
 		my_bar<-barplot(main="Number of CPUs associated with vendors in sample",xlab="Vendors",ylab="Associated number of CPUs",CPUs,names.arg=Vendors,col="lightblue")
-		text(my_bar,CPUs/2, paste( CPUs, sep="") ,cex=1) 
+		text(my_bar,CPUs/2, paste( CPUs, sep="") ,cex=1)
 			
 	## Đồ thị biểu diễn phân phối giá trị Machine Cycle Time (MYCT)
 		hist(Hardware[, "MYCT"], main = "Histogram of Machine Cycle Time (MYCT)",col = "lightBlue", xlab = "Machine Cycle Time (MYCT)", ylab = "Quantity",labels=TRUE)
@@ -52,30 +52,44 @@ library(ggplot2)
 		## Mô hình hồi quy tuyến tính bao gồm biến phụ thuộc PRP và tất cả các biến độc lập
 		Model_1 <- lm(formula=PRP~MYCT + MMIN+MMAX+CACH+CHMIN+CHMAX,data=Hardware)
 		summary(Model_1)
+		plot(Model_1$fitted.values, Model_1$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+		abline(h=0,col="red")
 		
 		## Mô hình hồi quy tuyến tính đã loại trừ biến MYCT
 		Model_2 <- lm(formula=PRP~MMIN+MMAX+CACH+CHMIN+CHMAX,data=Hardware)
 		summary(Model_2)
+		plot(Model_2$fitted.values, Model_2$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+		abline(h=0,col="red")
 		
 		## Mô hình hồi quy tuyến tính đã loại trừ biến MMIN
 		Model_3 <- lm(formula=PRP~MYCT+MMAX+CACH+CHMIN+CHMAX,data=Hardware)
 		summary(Model_3)
+		plot(Model_3$fitted.values, Model_3$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+		abline(h=0,col="red")
 		
 		## Mô hình hồi quy tuyến tính đã loại trừ biến MMAX
 		Model_4 <- lm(formula=PRP~MYCT+MMIN+CACH+CHMIN+CHMAX,data=Hardware)
 		summary(Model_4)
+		plot(Model_4$fitted.values, Model_4$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+		abline(h=0,col="red")
 		
 		## Mô hình hồi quy tuyến tính đã loại trừ biến CACH
 		Model_5 <- lm(formula=PRP~MYCT+MMIN+MMAX+CHMIN+CHMAX,data=Hardware)
 		summary(Model_5)
+		plot(Model_5$fitted.values, Model_5$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+		abline(h=0,col="red")
 		
 		## Mô hình hồi quy tuyến tính đã loại trừ biến CHMIN
 		Model_6 <- lm(formula=PRP~MYCT+MMIN+MMAX+CACH+CHMAX,data=Hardware)
 		summary(Model_6)
+		plot(Model_6$fitted.values, Model_6$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+		abline(h=0,col="red")
 		
 		## Mô hình hồi quy tuyến tính đã loại trừ biến CHMAX
 		Model_7 <- lm(formula=PRP~MYCT+MMIN+MMAX+CACH+CHMIN,data=Hardware)
 		summary(Model_7)
+		plot(Model_7$fitted.values, Model_7$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+		abline(h=0,col="red")
 		
 		## So sánh các mô hình hồi quy tuyến tính
 		compare_performance(Model_1,Model_2,Model_3,Model_4,Model_5,Model_6,Model_7)
