@@ -116,10 +116,12 @@ for(i in 1:length(New_value$CACH))
 }
 ## Thực hiện dự báo hiệu năng
 New_value$Predicted_Performance<-predict(Model_6,New_value)
-## Có một số CPU khi thực hiện dự báo hiệu năng thì cho ra kết quả âm => Gán giá trị hiệu năng của CPU đó bằng 0
+## Có một số CPU khi thực hiện dự báo hiệu năng thì cho ra kết quả âm => Xóa hàng chứa CPU đó ra khỏi bảng kết quả
+deleted_rows<-c()
 for(i in 1:length(New_value$Predicted_Performance))
 {
   if(New_value$Predicted_Performance[i]<0)
-    New_value$Predicted_Performance[i]=0
+    deleted_rows<-append(deleted_rows,i)
 }
+New_value<-New_value[-deleted_rows,]
 View(New_value)
