@@ -96,7 +96,7 @@ compare_performance(Model_1,Model_2,Model_3,Model_4,Model_5,Model_6,Model_7)
 ## => Vì mô hình Model_6 có giá trị R2 (adjust) lớn nhất, RMSE nhỏ thứ nhì và AIC nhỏ nhất trong số các mô hình trên nên ta chọn Model_6 làm mô hình hồi quy tuyến tính
 
 ## Vẽ đồ thị biểu diễn mối quan hệ giữa sai số hồi quy và giá trị dự báo
-plot(Model_16fitted.values, Model_6$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+plot(Model_6$fitted.values, Model_6$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
 abline(h=0,col="red")
 
 # Dự báo hiệu năng của mẫu các CPU mới dựa vào mô hình Model_6
