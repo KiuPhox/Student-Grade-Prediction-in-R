@@ -1,131 +1,125 @@
-			  	                       ### Phần cứng máy tính ###
+### Phần cứng máy tính ###
 library("performance")
 library(ggplot2)
 
 # Lấy dữ liệu
-	Hardware<-file.choose()
-	Hardware<-read.table(Hardware,header=FALSE,sep=",")
-	Hardware<-Hardware[,-10]
-	colnames(Hardware)<-c("VendorName","ModelName","MYCT","MMIN","MMAX","CACH","CHMIN","CHMAX","PRP")
-	View(Hardware)
-	
+Hardware<-file.choose()
+Hardware<-read.table(Hardware,header=FALSE,sep=",")
+Hardware<-Hardware[,-10]
+colnames(Hardware)<-c("VendorName","ModelName","MYCT","MMIN","MMAX","CACH","CHMIN","CHMAX","PRP")
+View(Hardware)
+
 # Làm rõ dữ liệu
-	## Thống kê các nhà sản xuất trong mẫu
-		temp<-Hardware[,1]
-		Vendors<-factor(temp[1:length(temp)])
-		Vendors<-levels(Vendors)
-		CPUs<-c()
-		for(i in 1:length(Vendors))
-		{
- 		 number<-sum(temp==Vendors[i])
- 		 CPUs<-append(CPUs,number)
-		}
-		my_bar<-barplot(main="Number of CPUs associated with vendors in sample",xlab="Vendors",ylab="Associated number of CPUs",CPUs,names.arg=Vendors,col="lightblue")
-		text(my_bar,CPUs/2, paste( CPUs, sep="") ,cex=1)
-			
-	## Đồ thị biểu diễn phân phối giá trị Machine Cycle Time (MYCT)
-		hist(Hardware[, "MYCT"], main = "Histogram of Machine Cycle Time (MYCT)",col = "lightBlue", xlab = "Machine Cycle Time (MYCT)", ylab = "Quantity",labels=TRUE)
+## Thống kê các nhà sản xuất trong mẫu
+temp<-Hardware[,1]
+Vendors<-factor(temp[1:length(temp)])
+Vendors<-levels(Vendors)
+CPUs<-c()
+for(i in 1:length(Vendors))
+{
+  number<-sum(temp==Vendors[i])
+  CPUs<-append(CPUs,number)
+}
+my_bar<-barplot(main="Number of CPUs associated with vendors in sample",xlab="Vendors",ylab="Associated number of CPUs",CPUs,names.arg=Vendors,col="lightblue")
+text(my_bar,CPUs/2, paste( CPUs, sep="") ,cex=1)
 
-	## Đồ thị biểu diễn phân phối giá trị Minimum Main Memory (MMIN)
-		hist(Hardware[, "MMIN"], main = "Histogram of Minimum Main Memory (MMIN)",col = "lightBlue", xlab = "Minimum Main Memory (MMIN)", ylab = "Quantity", labels = TRUE)
+## Đồ thị biểu diễn phân phối giá trị Machine Cycle Time (MYCT)
+hist(Hardware[, "MYCT"], main = "Histogram of Machine Cycle Time (MYCT)",col = "lightBlue", xlab = "Machine Cycle Time (MYCT)", ylab = "Quantity",labels=TRUE)
 
-	## Đồ thị biểu diễn phân phối giá trị Maximum Main Memory (MMAX)
-		hist(Hardware[, "MMAX"], main = "Histogram of Maximum Main Memory (MMAX)",col = "lightBlue", xlab = "Maximum Main Memory (MMAX)", ylab = "Quantity", labels = TRUE)
+## Đồ thị biểu diễn phân phối giá trị Minimum Main Memory (MMIN)
+hist(Hardware[, "MMIN"], main = "Histogram of Minimum Main Memory (MMIN)",col = "lightBlue", xlab = "Minimum Main Memory (MMIN)", ylab = "Quantity", labels = TRUE)
 
-	## Đồ thị biểu diễn phân phối giá trị Cache Memory (CACH)
-		hist(Hardware[, "CACH"], main = "Histogram of Cache Memory (CACH)",col = "lightBlue", xlab = "Cache Memory (CACH)", ylab = "Quantity", labels = TRUE)
+## Đồ thị biểu diễn phân phối giá trị Maximum Main Memory (MMAX)
+hist(Hardware[, "MMAX"], main = "Histogram of Maximum Main Memory (MMAX)",col = "lightBlue", xlab = "Maximum Main Memory (MMAX)", ylab = "Quantity", labels = TRUE)
 
-	## Đồ thị biểu diễn phân phối giá trị Minimum Channels (CHMIN)
-		hist(Hardware[, "CHMIN"], main = "Histogram of Minimum Channels (CHMIN)",col = "lightBlue", xlab = "Minimum Channels (CHMIN))", ylab = "Quantity", labels = TRUE)
+## Đồ thị biểu diễn phân phối giá trị Cache Memory (CACH)
+hist(Hardware[, "CACH"], main = "Histogram of Cache Memory (CACH)",col = "lightBlue", xlab = "Cache Memory (CACH)", ylab = "Quantity", labels = TRUE)
 
-	## Đồ thị biểu diễn phân phối giá trị Maximum Channels (CHMAX)
-		hist(Hardware[, "CHMAX"], main = "Histogram of Maximum Channels (CHMAX)",col = "lightBlue", xlab = "Maximum Channels (CHMAX)", ylab = "Quantity", labels = TRUE)
+## Đồ thị biểu diễn phân phối giá trị Minimum Channels (CHMIN)
+hist(Hardware[, "CHMIN"], main = "Histogram of Minimum Channels (CHMIN)",col = "lightBlue", xlab = "Minimum Channels (CHMIN))", ylab = "Quantity", labels = TRUE)
 
-	## Đồ thị biểu diễn phân phối giá trị Published Relative Performance (PRP)
-		hist(Hardware[, "PRP"], main = "Histogram of Published Relative Performance (PRP)",col = "lightBlue", xlab = "Published Relative Performance (PRP)", ylab = "Quantity", labels = TRUE)
+## Đồ thị biểu diễn phân phối giá trị Maximum Channels (CHMAX)
+hist(Hardware[, "CHMAX"], main = "Histogram of Maximum Channels (CHMAX)",col = "lightBlue", xlab = "Maximum Channels (CHMAX)", ylab = "Quantity", labels = TRUE)
 
-	## Bảng thống kê giá trị trung bình, trung vị, giá trị lớn nhất và giá trị nhỏ nhất của các biến trên
-		Table<-as.data.frame(rbind(sapply(Hardware[,3:9],mean),sapply(Hardware[,3:9],median),sapply(Hardware[,3:9],min),sapply(Hardware[,3:9],max)),row.names=c("Mean","Median","Min","Max"))
-		View(Table)
-		
+## Đồ thị biểu diễn phân phối giá trị Published Relative Performance (PRP)
+hist(Hardware[, "PRP"], main = "Histogram of Published Relative Performance (PRP)",col = "lightBlue", xlab = "Published Relative Performance (PRP)", ylab = "Quantity", labels = TRUE)
+
+## Bảng thống kê giá trị trung bình, trung vị, giá trị lớn nhất và giá trị nhỏ nhất của các biến trên
+Table<-as.data.frame(rbind(sapply(Hardware[,3:9],mean),sapply(Hardware[,3:9],median),sapply(Hardware[,3:9],min),sapply(Hardware[,3:9],max)),row.names=c("Mean","Median","Min","Max"))
+View(Table)
+
 # Xây dưng mô hình hồi quy tuyến tính
-		## Mô hình hồi quy tuyến tính bao gồm biến phụ thuộc PRP và tất cả các biến độc lập
-		Model_1 <- lm(formula=PRP~MYCT + MMIN+MMAX+CACH+CHMIN+CHMAX,data=Hardware)
-		summary(Model_1)
-		plot(Model_1$fitted.values, Model_1$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
-		abline(h=0,col="red")
-		
-		## Mô hình hồi quy tuyến tính đã loại trừ biến MYCT
-		Model_2 <- lm(formula=PRP~MMIN+MMAX+CACH+CHMIN+CHMAX,data=Hardware)
-		summary(Model_2)
-		plot(Model_2$fitted.values, Model_2$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
-		abline(h=0,col="red")
-		
-		## Mô hình hồi quy tuyến tính đã loại trừ biến MMIN
-		Model_3 <- lm(formula=PRP~MYCT+MMAX+CACH+CHMIN+CHMAX,data=Hardware)
-		summary(Model_3)
-		plot(Model_3$fitted.values, Model_3$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
-		abline(h=0,col="red")
-		
-		## Mô hình hồi quy tuyến tính đã loại trừ biến MMAX
-		Model_4 <- lm(formula=PRP~MYCT+MMIN+CACH+CHMIN+CHMAX,data=Hardware)
-		summary(Model_4)
-		plot(Model_4$fitted.values, Model_4$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
-		abline(h=0,col="red")
-		
-		## Mô hình hồi quy tuyến tính đã loại trừ biến CACH
-		Model_5 <- lm(formula=PRP~MYCT+MMIN+MMAX+CHMIN+CHMAX,data=Hardware)
-		summary(Model_5)
-		plot(Model_5$fitted.values, Model_5$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
-		abline(h=0,col="red")
-		
-		## Mô hình hồi quy tuyến tính đã loại trừ biến CHMIN
-		Model_6 <- lm(formula=PRP~MYCT+MMIN+MMAX+CACH+CHMAX,data=Hardware)
-		summary(Model_6)
-		plot(Model_6$fitted.values, Model_6$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
-		abline(h=0,col="red")
-		
-		## Mô hình hồi quy tuyến tính đã loại trừ biến CHMAX
-		Model_7 <- lm(formula=PRP~MYCT+MMIN+MMAX+CACH+CHMIN,data=Hardware)
-		summary(Model_7)
-		plot(Model_7$fitted.values, Model_7$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
-		abline(h=0,col="red")
-		
-		## So sánh các mô hình hồi quy tuyến tính
-		compare_performance(Model_1,Model_2,Model_3,Model_4,Model_5,Model_6,Model_7)
-		## => Vì mô hình Model_1 có giá trị R2 (adjust) lớn nhất, RMSE nhỏ nhất và AIC nhỏ thứ 2 trong số các mô hình trên nên ta chọn Model_1 làm mô hình hồi quy tuyến tính
-		
-		## Vẽ đồ thị biểu diễn mối quan hệ giữa sai số hồi quy và giá trị dự báo
-		plot(Model_1$fitted.values, Model_1$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
-		abline(h=0,col="red")
-		
-# Dự báo hiệu năng của mẫu các CPU mới dựa vào mô hình Model_1
-		## Tạo một mẫu CPU có các thông số mới
-		New_value <- data.frame(Hardware[,c(3:8)])
-		for(i in 1:length(New_value$MYCT))
-		{
-		  New_value$MYCT[i]=New_value$MYCT[i]+floor(runif(1,min=-10, max=25))
-		}
-		for(i in 1:length(New_value$MMIN))
-		{
-		  New_value$MMIN[i]=New_value$MMIN[i]+floor(runif(1,min=-30, max=150))
-		}
-		for(i in 1:length(New_value$CACH))
-		{
-		  New_value$CACH[i]=New_value$CACH[i]+floor(runif(1,min=0, max=8))
-		}
-		for(i in 1:length(New_value$CHMIN))
-		{
-		  New_value$CHMIN[i]=New_value$CHMIN[i]+floor(runif(1,min=0, max=3))
-		}
-		## Thực hiện dự báo hiệu năng
-		New_value$Predicted_Performance<-predict(Model_1,New_value)
-		## Có một số CPU khi thực hiện dự báo hiệu năng thì cho ra kết quả âm => Gán giá trị hiệu năng của CPU đó bằng 0
-		for(i in 1:length(New_value$Predicted_Performance))
-		{
-		  if(New_value$Predicted_Performance[i]<0)
-	    New_value$Predicted_Performance[i]=0
-		}
-		View(New_value)
+## Mô hình hồi quy tuyến tính bao gồm biến phụ thuộc PRP và tất cả các biến độc lập
+Model_1 <- lm(formula=PRP~MYCT + MMIN+MMAX+CACH+CHMIN+CHMAX,data=Hardware)
+summary(Model_1)
+plot(Model_1$fitted.values, Model_1$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+abline(h=0,col="red")
 
-		
+## Mô hình hồi quy tuyến tính đã loại trừ biến MYCT
+Model_2 <- lm(formula=PRP~MMIN+MMAX+CACH+CHMIN+CHMAX,data=Hardware)
+summary(Model_2)
+plot(Model_2$fitted.values, Model_2$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+abline(h=0,col="red")
+
+## Mô hình hồi quy tuyến tính đã loại trừ biến MMIN
+Model_3 <- lm(formula=PRP~MYCT+MMAX+CACH+CHMIN+CHMAX,data=Hardware)
+summary(Model_3)
+plot(Model_3$fitted.values, Model_3$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+abline(h=0,col="red")
+
+## Mô hình hồi quy tuyến tính đã loại trừ biến MMAX
+Model_4 <- lm(formula=PRP~MYCT+MMIN+CACH+CHMIN+CHMAX,data=Hardware)
+summary(Model_4)
+plot(Model_4$fitted.values, Model_4$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+abline(h=0,col="red")
+
+## Mô hình hồi quy tuyến tính đã loại trừ biến CACH
+Model_5 <- lm(formula=PRP~MYCT+MMIN+MMAX+CHMIN+CHMAX,data=Hardware)
+summary(Model_5)
+plot(Model_5$fitted.values, Model_5$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+abline(h=0,col="red")
+
+## Mô hình hồi quy tuyến tính đã loại trừ biến CHMIN
+Model_6 <- lm(formula=PRP~MYCT+MMIN+MMAX+CACH+CHMAX,data=Hardware)
+summary(Model_6)
+plot(Model_6$fitted.values, Model_6$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+abline(h=0,col="red")
+
+## Mô hình hồi quy tuyến tính đã loại trừ biến CHMAX
+Model_7 <- lm(formula=PRP~MYCT+MMIN+MMAX+CACH+CHMIN,data=Hardware)
+summary(Model_7)
+plot(Model_7$fitted.values, Model_7$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+abline(h=0,col="red")
+
+## So sánh các mô hình hồi quy tuyến tính
+compare_performance(Model_1,Model_2,Model_3,Model_4,Model_5,Model_6,Model_7)
+## => Vì mô hình Model_6 có giá trị R2 (adjust) lớn nhất, RMSE nhỏ thứ nhì và AIC nhỏ nhất trong số các mô hình trên nên ta chọn Model_6 làm mô hình hồi quy tuyến tính
+
+## Vẽ đồ thị biểu diễn mối quan hệ giữa sai số hồi quy và giá trị dự báo
+plot(Model_16fitted.values, Model_6$residuals,pch = 16,col = "black",xlab = "Giá trị dự báo", ylab="Sai số hồi quy",main = "Residual Plot")		
+abline(h=0,col="red")
+
+# Dự báo hiệu năng của mẫu các CPU mới dựa vào mô hình Model_6
+## Tạo một mẫu CPU có các thông số mới
+New_value <- data.frame(Hardware[,c(3:6,8)])
+for(i in 1:length(New_value$MYCT))
+{
+  New_value$MYCT[i]=New_value$MYCT[i]+floor(runif(1,min=-10, max=25))
+}
+for(i in 1:length(New_value$MMIN))
+{
+  New_value$MMIN[i]=New_value$MMIN[i]+floor(runif(1,min=-30, max=150))
+}
+for(i in 1:length(New_value$CACH))
+{
+  New_value$CACH[i]=New_value$CACH[i]+floor(runif(1,min=0, max=8))
+}
+## Thực hiện dự báo hiệu năng
+New_value$Predicted_Performance<-predict(Model_6,New_value)
+## Có một số CPU khi thực hiện dự báo hiệu năng thì cho ra kết quả âm => Gán giá trị hiệu năng của CPU đó bằng 0
+for(i in 1:length(New_value$Predicted_Performance))
+{
+  if(New_value$Predicted_Performance[i]<0)
+    New_value$Predicted_Performance[i]=0
+}
+View(New_value)
